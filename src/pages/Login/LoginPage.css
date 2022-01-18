@@ -1,0 +1,14 @@
+.login-main-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.login-inner-container{
+    width: 80%;
+    height: fit-content;
+}
