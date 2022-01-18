@@ -1,0 +1,7 @@
+{
+  "name": "upload-download-user-dashboard",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

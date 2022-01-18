@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "upload-download-user-dashboard",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
