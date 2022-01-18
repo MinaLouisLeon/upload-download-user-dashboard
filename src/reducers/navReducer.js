@@ -3,7 +3,15 @@ const initialState = {
 }
 
 const navReducer = (state=initialState,action) => {
-    return state
+    switch(action.type){
+        case "setNav" :
+            return{
+                ...state,
+                page : action.payload
+            }
+        default :
+            return state
+    }
 }
 
 export default navReducer;

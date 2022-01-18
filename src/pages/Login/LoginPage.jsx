@@ -15,11 +15,37 @@ import "./LoginPage.css";
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { actionSetUserInfo } from './../../actions/index';
+import { actionSetUserInfo ,actionSetNav} from "./../../actions/index";
+import { getUSerInfoFromFirestore } from "../../api/firestoreFun";
+
+
 const LoginPage = () => {
-    const dispatch = useDispatch(null);
+  const dispatch = useDispatch(null);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  // after login success fet user data from firestore database
+  const handleLogin = async (user) => {
+    const userDataFromFireStore = await getUSerInfoFromFirestore(user.uid);
+        if (userDataFromFireStore === false) {
+          // error message
+        } else {
+          console.log(userDataFromFireStore)
+          const userData = {
+            uid: user.uid,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            isAdmin : userDataFromFireStore.isAdmin
+          };
+          dispatch(actionSetUserInfo(userData));
+          if(userDataFromFireStore.isAdmin === true){
+            dispatch(actionSetNav("AdminUsersPage"))
+          }else{
+            dispatch(actionSetNav("ClientPage"))
+          }
+        }
+        console.log(user);
+  }
+  // handle submit button and login useing firebase auth email/password
   const handleSubmit = (e) => {
     e.preventDefault();
     const auth = getAuth();
@@ -27,22 +53,16 @@ const LoginPage = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        const userData = {
-            uid : user.uid,
-            email : user.email,
-            emailVerified : user.emailVerified,
-        }
-        dispatch(actionSetUserInfo(userData))
-        console.log(user)
+        handleLogin(user);
       })
       .catch((error) => {
         const errorCode = error.code;
-        if(errorCode === "auth/user-not-found"){
-            // error message 
-        }else if (errorCode === "auth/wrong-password"){
-            // error message 
-        }else{
-            // error message 
+        if (errorCode === "auth/user-not-found") {
+          // error message
+        } else if (errorCode === "auth/wrong-password") {
+          // error message
+        } else {
+          // error message
         }
       });
   };

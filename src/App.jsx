@@ -19,13 +19,14 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-import LoginPage from './pages/Login/LoginPage';
+import Nav from './Nav';
 
 setupIonicReact();
 
+
 const App = () => (
   <IonApp>
-    <LoginPage/>
+    <Nav/>
   </IonApp>
 );
 
