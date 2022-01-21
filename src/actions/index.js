@@ -1,8 +1,9 @@
 //navReducer
-export const actionSetNav = (args) => {
+export const actionSetNav = (url,title) => {
     return{
         type : "setNav",
-        payload : args
+        url : url,
+        title : title,
     }
 }
 

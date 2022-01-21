@@ -1,0 +1,16 @@
+.add-user-main-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
+
+.add-user-inner-container{
+    width: 80%;
+    height: fit-content;
+}

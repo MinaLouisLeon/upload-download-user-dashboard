@@ -1,0 +1,24 @@
+.header-main-container {
+    display: flex;
+    justify-content: center;
+}
+
+.header-inner-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 85%;
+    /* border-top-style: none; */
+    /* border-bottom-style: dashed; */
+    /* border-bottom-color: #00000012; */
+    box-shadow: 20px;
+}
+
+.header-nav-container{
+    display: flex;
+}
+
+.header-nav-item{
+    cursor: pointer;
+    text-decoration: underline;
+}

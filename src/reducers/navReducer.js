@@ -1,5 +1,6 @@
 const initialState = {
-    page : '/'
+    page : '/',
+    title : "Home"
 }
 
 const navReducer = (state=initialState,action) => {
@@ -7,7 +8,8 @@ const navReducer = (state=initialState,action) => {
         case "setNav" :
             return{
                 ...state,
-                page : action.payload
+                page : action.url,
+                title : action.title,
             }
         default :
             return state

@@ -17,6 +17,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { actionSetUserInfo ,actionSetNav} from "./../../actions/index";
 import { getUSerInfoFromFirestore } from "../../api/firestoreFun";
+import HeaderComp from "../../components/HeaderComp/HeaderComp";
 
 
 const LoginPage = () => {
@@ -33,14 +34,16 @@ const LoginPage = () => {
           const userData = {
             uid: user.uid,
             email: user.email,
+            password : userPassword,
             emailVerified: user.emailVerified,
             isAdmin : userDataFromFireStore.isAdmin
           };
           dispatch(actionSetUserInfo(userData));
           if(userDataFromFireStore.isAdmin === true){
-            dispatch(actionSetNav("AdminUsersPage"))
+            dispatch(actionSetNav("AdminUsersPage","All Users"))
           }else{
-            dispatch(actionSetNav("ClientPage"))
+            // TODO set title
+            dispatch(actionSetNav("ClientPage" , "title"))
           }
         }
         console.log(user);
@@ -68,17 +71,13 @@ const LoginPage = () => {
   };
   return (
     <IonPage>
-      {/* mobile header */}
-      {isMobile ? (
-        <IonHeader>
-          <IonToolbar mode="ios">
-            <IonTitle>Soury SCO</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-      ) : (
-        <></>
-      )}
+      {isMobile ? <IonHeader>
+        <IonToolbar mode="ios">
+          <IonTitle>Mina Louis Leon</IonTitle>
+        </IonToolbar>
+      </IonHeader> : <></>}
       <IonContent fullscreen>
+        {isMobile ? <></> : <HeaderComp />}
         <div className="login-main-container">
           <form onSubmit={handleSubmit}>
             <div className="login-inner-container br4 shadow-2 tc h5 w5">
@@ -87,7 +86,7 @@ const LoginPage = () => {
                   <IonTitle>Login</IonTitle>
                 </IonToolbar>
               </IonHeader>
-              <IonList className="br4">
+              <IonList className="br4" mode="md">
                 <IonItem>
                   <IonLabel position="stacked">Email:</IonLabel>
                   <IonInput
