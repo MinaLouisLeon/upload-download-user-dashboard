@@ -40,7 +40,7 @@ const SideMenu = () => {
             <IonItem
               button
               onClick={() =>
-                dispatch(actionSetNav("UploadFiles", "Upload File"))
+                dispatch(actionSetNav("UploadFiles", "Upload Files"))
               }
             >
               <IonLabel>Upload File</IonLabel>

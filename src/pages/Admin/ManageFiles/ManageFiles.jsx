@@ -13,7 +13,7 @@ const ManageFiles = () => {
             {isMobile ? <HeaderComp /> : <></>}
             <IonContent fullscreen id={enableSideMenu}>
                 {isMobile ? <></> : <HeaderComp>
-                    <IonButton fill='solid' shape='round' color="primary" onClick={() => dispatch(actionSetNav("UploadFiles" , "Upload File"))}>Upload File</IonButton>
+                    <IonButton fill='solid' shape='round' color="primary" onClick={() => dispatch(actionSetNav("UploadFiles" , "Upload Files"))}>Upload File</IonButton>
                 </HeaderComp>}
                 {/* TODO add content */}
             </IonContent>

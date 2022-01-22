@@ -4,6 +4,7 @@ import AdminUsersPage from "./pages/Admin/UsersPage/AdminUsersPage";
 import AddUserPage from "./pages/Admin/AddUserPage/AddUserPage";
 import ManageFiles from "./pages/Admin/ManageFiles/ManageFiles";
 import UploadFiles from "./pages/Admin/UploadFiles/UploadFiles";
+import FilesUploader from "./pages/Admin/FilesUploader/FilesUploader";
 const Nav = () => {
     const page = useSelector(state => state.navReducer.page);
     const handleNav = () => {
@@ -17,7 +18,8 @@ const Nav = () => {
             case 'ManageFiles' :
                 return(<ManageFiles />)
             case 'UploadFiles' :
-                return(<UploadFiles />)
+                // return(<UploadFiles />)
+                return (<FilesUploader />)
             default : 
                 return(<LoginPage/>)
         }
