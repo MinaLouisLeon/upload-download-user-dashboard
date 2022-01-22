@@ -15,10 +15,16 @@ import "./LoginPage.css";
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { actionSetUserInfo ,actionSetNav} from "./../../actions/index";
-import { getUSerInfoFromFirestore } from "../../api/firestoreFun";
+import {
+  actionSetUserInfo,
+  actionSetNav,
+  actionSetAllUsers,
+} from "./../../actions/index";
+import {
+  getAllUsersFromFireStore,
+  getUSerInfoFromFirestore,
+} from "../../api/firestoreFun";
 import HeaderComp from "../../components/HeaderComp/HeaderComp";
-
 
 const LoginPage = () => {
   const dispatch = useDispatch(null);
@@ -27,27 +33,29 @@ const LoginPage = () => {
   // after login success fet user data from firestore database
   const handleLogin = async (user) => {
     const userDataFromFireStore = await getUSerInfoFromFirestore(user.uid);
-        if (userDataFromFireStore === false) {
-          // error message
-        } else {
-          console.log(userDataFromFireStore)
-          const userData = {
-            uid: user.uid,
-            email: user.email,
-            password : userPassword,
-            emailVerified: user.emailVerified,
-            isAdmin : userDataFromFireStore.isAdmin
-          };
-          dispatch(actionSetUserInfo(userData));
-          if(userDataFromFireStore.isAdmin === true){
-            dispatch(actionSetNav("AdminUsersPage","All Users"))
-          }else{
-            // TODO set title
-            dispatch(actionSetNav("ClientPage" , "title"))
-          }
-        }
-        console.log(user);
-  }
+    if (userDataFromFireStore === false) {
+      // error message
+    } else {
+      console.log(userDataFromFireStore);
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        password: userPassword,
+        emailVerified: user.emailVerified,
+        isAdmin: userDataFromFireStore.isAdmin,
+      };
+      dispatch(actionSetUserInfo(userData));
+      if (userDataFromFireStore.isAdmin === true) {
+        const allUsersData = await getAllUsersFromFireStore();
+        dispatch(actionSetAllUsers(allUsersData));
+        dispatch(actionSetNav("AdminUsersPage", "All Users"));
+      } else {
+        // TODO set title
+        dispatch(actionSetNav("ClientPage", "title"));
+      }
+    }
+    console.log(user);
+  };
   // handle submit button and login useing firebase auth email/password
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,14 +79,29 @@ const LoginPage = () => {
   };
   return (
     <IonPage>
-      {isMobile ? <IonHeader>
-        <IonToolbar mode="ios">
-          <IonTitle>Mina Louis Leon</IonTitle>
-        </IonToolbar>
-      </IonHeader> : <></>}
+      {isMobile ? (
+        <IonHeader>
+          <IonToolbar mode="ios">
+            <IonTitle>Mina Louis Leon</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+      ) : (
+        <></>
+      )}
       <IonContent fullscreen>
-        {isMobile ? <></> : <HeaderComp />}
-        <div className="login-main-container">
+        {isMobile ? (
+          <></>
+        ) : (
+          <div style={{ display: "flex" , "flexDirection" : "row" , "justifyContent" : "center"}}>
+            <img
+              src="/logo.png"
+              alt="site logo"
+              style={{ width: "157px", height: "100px" }}
+              className="ma2"
+            />
+          </div>
+        )}
+        <div className="login-main-container mt3">
           <form onSubmit={handleSubmit}>
             <div className="login-inner-container br4 shadow-2 tc h5 w5">
               <IonHeader className="br4">

@@ -14,3 +14,25 @@ export const actionSetUserInfo = (args) => {
         payload : args
     }
 }
+
+//allUsersDataReducer
+export const actionSetAllUsers = (args) => {
+    return{
+        type : 'setAllUsersData',
+        payload : args
+    }
+}
+
+//uploadDatraReducer
+export const actionSetUploadReducer = (args) => {
+    return{
+        type : "setUploadData",
+        payload : args
+    }
+}
+
+export const actionResetUploadDataReducer = () => {
+    return{
+        type : "resetUploadData"
+    }
+}

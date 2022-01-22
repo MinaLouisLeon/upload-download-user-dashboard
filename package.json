@@ -25,6 +25,8 @@
     "mobile-device-detect": "^0.4.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-dropzone": "^11.5.1",
+    "react-firebase-file-uploader": "^2.4.4",
     "react-redux": "^7.2.6",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

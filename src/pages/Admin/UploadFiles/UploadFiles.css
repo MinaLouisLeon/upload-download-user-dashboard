@@ -1,0 +1,13 @@
+.upload-files-main-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.upload-files-inner-container{
+    width: 80%;
+    height: fit-content;
+}
