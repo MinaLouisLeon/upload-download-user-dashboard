@@ -6,6 +6,9 @@ import { storage } from "../../../api/firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useDispatch, useSelector } from "react-redux";
 import { actionSetUploadReducer } from "../../../actions";
+import { useState } from "react";
+import Mmodal from "../../../components/Mmodal/Mmodal";
+import { actionResetUploadDataReducer ,actionSetNav} from './../../../actions/index';
 import {
   IonButton,
   IonButtons,
@@ -18,7 +21,82 @@ import {
 const FilesUploader = () => {
   const dispatch = useDispatch(null);
   const PageTitle = useSelector((state) => state.navReducer.title);
+  const uploadObjectReducer = useSelector(
+    (state) => state.uploadDataReducer.objectData
+  );
+  const [showMmodal, setShowMmodal] = useState(false);
   let uploadObject = {};
+  // handle close of upload modal and clean upload reducer & upload object
+  const handleCloseMmodal = () => {
+    setShowMmodal(false);
+    uploadObject = {};
+    dispatch(actionResetUploadDataReducer());
+  };
+  // upload files to firebase storage
+  const uploadFilesMonitorToFirebaseStorage  = (
+    filepath,
+    filename,
+    filetype,
+    file,
+    key
+  ) => {
+    console.log("start uploading")
+    const fileRef = ref(storage, filepath, filename);
+    const uploadTask = uploadBytesResumable(fileRef, file, filetype);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Progress : ",progress)
+        uploadObject = {
+          ...uploadObject,
+          [key]: {
+            ...uploadObject[key],
+            progress: progress,
+          },
+        };
+
+        dispatch(actionSetUploadReducer(uploadObject));
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+        });
+      }
+    );
+  };
+  //call the download function and set path on firebase
+  const handleStartUploading = () => {
+    Object.keys(uploadObject).map((key) => {
+      console.log("start upload function of ",uploadObject[key].file.name);
+      uploadFilesMonitorToFirebaseStorage(
+        "files/" + uploadObject[key].file.name,
+        uploadObject[key].file.name,
+        uploadObject[key].file.type,
+        uploadObject[key].file,
+        key
+      );
+    });
+  };
+  // construct the object for nulti download files
+  const handleConstructUploading = async(acceptedFiles) => {
+    console.log("start constraction")
+    acceptedFiles.map((file) => {
+      let filename = file.name;
+      uploadObject = {
+        ...uploadObject,
+        [filename]: {
+          file: file,
+          progress: 0,
+        },
+      };
+    });
+    await dispatch(actionSetUploadReducer(uploadObject));
+    console.log("dispatch done")
+    handleStartUploading();
+  };
+  // dropzone styling
   const baseStyle = {
     flex: 1,
     display: "flex",
@@ -76,22 +154,38 @@ const FilesUploader = () => {
         <aside className="ml4">
           <h4>Files</h4>
           <ul>{files}</ul>
-          {files.length !== 0 ? <>
-             <div className="tc">
-             <IonButton color="primary">Start uploading</IonButton>
-             </div>
-          </> : <></>}
+          {files.length !== 0 ? (
+            <>
+              <div className="tc">
+                <IonButton
+                  color="primary"
+                  onClick={() => {
+                    handleConstructUploading(acceptedFiles);
+                    setShowMmodal(true);
+                  }}
+                >
+                  Start uploading
+                </IonButton>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
         </aside>
       </div>
     );
   }
+  // page content
   return (
     <IonPage>
       {isMobile ? (
         <IonHeader>
           <IonToolbar mode="ios">
             <IonButtons>
-              <IonButton color="primary" slot="start">
+              <IonButton color="primary" slot="start" onClick={() => {
+                handleCloseMmodal();
+                dispatch(actionSetNav("ManageFiles","Manage Files"));
+              }}>
                 Back
               </IonButton>
               <IonTitle>{PageTitle}</IonTitle>
@@ -102,6 +196,27 @@ const FilesUploader = () => {
         <></>
       )}
       <IonContent fullscreen>
+        <Mmodal show={showMmodal} handleClose={() => handleCloseMmodal()}>
+          <div className="pa2 ma2">
+            <ul>
+              {Object.keys(uploadObjectReducer).length === 0 ? (
+                <></>
+              ) : (
+                <>
+                  {Object.keys(uploadObjectReducer).map((key) => {
+                    return (
+                      <li>
+                        {uploadObjectReducer[key].file.name} - size :{" "}
+                        {uploadObjectReducer[key].file.size} bytes - progress :{" "}
+                        {uploadObjectReducer[key].progress}%
+                      </li>
+                    );
+                  })}
+                </>
+              )}
+            </ul>
+          </div>
+        </Mmodal>
         {isMobile ? (
           <>
             <StyledDropzone />
