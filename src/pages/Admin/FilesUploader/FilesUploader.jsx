@@ -24,6 +24,7 @@ const FilesUploader = () => {
   const uploadObjectReducer = useSelector(
     (state) => state.uploadDataReducer.objectData
   );
+  const selectedUserUid = useSelector(state => state.allUsersDataReducer.selectedUser.uid);
   const [showMmodal, setShowMmodal] = useState(false);
   let uploadObject = {};
   // handle close of upload modal and clean upload reducer & upload object
@@ -71,7 +72,7 @@ const FilesUploader = () => {
     Object.keys(uploadObject).map((key) => {
       console.log("start upload function of ",uploadObject[key].file.name);
       uploadFilesMonitorToFirebaseStorage(
-        "files/" + uploadObject[key].file.name,
+        selectedUserUid + "/" + uploadObject[key].file.name,
         uploadObject[key].file.name,
         uploadObject[key].file.type,
         uploadObject[key].file,
@@ -182,10 +183,7 @@ const FilesUploader = () => {
         <IonHeader>
           <IonToolbar mode="ios">
             <IonButtons>
-              <IonButton color="primary" slot="start" onClick={() => {
-                handleCloseMmodal();
-                dispatch(actionSetNav("ManageFiles","Manage Files"));
-              }}>
+              <IonButton color="primary" slot="start" onClick={() => dispatch(actionSetNav("ManageFiles","Manage Files"))}>
                 Back
               </IonButton>
               <IonTitle>{PageTitle}</IonTitle>
@@ -235,7 +233,7 @@ const FilesUploader = () => {
                 </div>
                 <div className="header-nav-container">
                   <IonButtons>
-                    <IonButton fill="solid" color="primary" shape="round">
+                    <IonButton fill="solid" color="primary" shape="round" onClick={() => dispatch(actionSetNav("ManageFiles","Manage Files"))}>
                       Back
                     </IonButton>
                     <IonButton fill="solid" color="danger" shape="round">

@@ -10,7 +10,7 @@ import { isMobile } from "mobile-device-detect";
 import HeaderComp from "../../../components/HeaderComp/HeaderComp";
 import { useSelector , useDispatch} from "react-redux";
 import { useState } from "react";
-import { actionSetNav } from './../../../actions/index';
+import { actionSetNav, actionSetSelectedUser } from './../../../actions/index';
 const AdminUsersPage = () => {
   const dispatch = useDispatch(null);
   const enableSideMenu = isMobile ? "enable-sidemenu" : "";
@@ -21,6 +21,7 @@ const AdminUsersPage = () => {
   const [actionSheetState, setActionSheetState] = useState({
     showActionSheet: false,
     key: null,
+    username:null
   });
 
   const contentListData = (
@@ -30,7 +31,7 @@ const AdminUsersPage = () => {
           <IonItem
             button
             onClick={() =>
-              setActionSheetState({ showActionSheet: true, key: key })
+              setActionSheetState({ showActionSheet: true, key: key ,username:allUsersData[key].userName})
             }
           >
             {/* {allUsersData[key].userName + " (" + allUsersData[key].email + ")"} */}
@@ -63,19 +64,14 @@ const AdminUsersPage = () => {
           mode="ios"
           isOpen={actionSheetState.showActionSheet}
           onDidDismiss={() =>
-            setActionSheetState({ showActionSheet: false, key: null })
+            setActionSheetState({ showActionSheet: false, key: null ,username:null})
           }
           buttons={[
             {
               text: "Manage Files",
               handler: () => {
+                dispatch(actionSetSelectedUser(actionSheetState.key,actionSheetState.username))
                 dispatch(actionSetNav("ManageFiles","Manage Files"));
-              },
-            },
-            {
-              text: "Edit Password",
-              handler: () => {
-                console.log("edit password");
               },
             },
             {

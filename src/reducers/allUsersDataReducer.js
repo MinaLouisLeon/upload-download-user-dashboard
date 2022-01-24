@@ -1,5 +1,10 @@
 const initailState = {
-    allUsersData : null
+    allUsersData : null,
+    selectedUser : {
+        uid : "",
+        username : "",
+    },
+    userFilesListRef : {},
 }
 
 const allUsersDataReducer = (state=initailState,action) => {
@@ -8,6 +13,19 @@ const allUsersDataReducer = (state=initailState,action) => {
             return{
                 ...state,
                 allUsersData : action.payload
+            }
+        case 'setSelectedUser' :
+            return{
+                ...state,
+                selectedUser : {
+                    uid : action.uid,
+                    username : action.username
+                }
+            }
+        case 'setUserFilesListRef' :
+            return{
+                ...state,
+                userFilesListRef : action.payload
             }
         default :
             return state

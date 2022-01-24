@@ -23,6 +23,21 @@ export const actionSetAllUsers = (args) => {
     }
 }
 
+export const actionSetSelectedUser = (uid,username) => {
+    return{
+        type : "setSelectedUser",
+        uid : uid,
+        username : username,
+    }
+}
+
+export const actionSetUserFilesListRef = (ListRefObj) => {
+    return{
+        type : "setUserFilesListRef",
+        payload : ListRefObj,
+    }
+} 
+
 //uploadDatraReducer
 export const actionSetUploadReducer = (args) => {
     return{
