@@ -9,6 +9,7 @@ import { actionSetUploadReducer } from "../../../actions";
 import { useState } from "react";
 import Mmodal from "../../../components/Mmodal/Mmodal";
 import { actionResetUploadDataReducer ,actionSetNav} from './../../../actions/index';
+import { logoutFromFirebaseAuth } from "../../../api/firestoreFun";
 import {
   IonButton,
   IonButtons,
@@ -195,7 +196,7 @@ const FilesUploader = () => {
       )}
       <IonContent fullscreen>
         <Mmodal show={showMmodal} handleClose={() => handleCloseMmodal()}>
-          <div className="pa2 ma2">
+          <div className="pa2 ma2 w5">
             <ul>
               {Object.keys(uploadObjectReducer).length === 0 ? (
                 <></>
@@ -236,7 +237,10 @@ const FilesUploader = () => {
                     <IonButton fill="solid" color="primary" shape="round" onClick={() => dispatch(actionSetNav("ManageFiles","Manage Files"))}>
                       Back
                     </IonButton>
-                    <IonButton fill="solid" color="danger" shape="round">
+                    <IonButton fill="solid" color="danger" shape="round" onClick={() => {
+                 logoutFromFirebaseAuth();
+                 dispatch(actionSetNav("/","Home"));
+              }}>
                       Logout
                     </IonButton>
                   </IonButtons>

@@ -10,6 +10,7 @@ import {
 } from "@ionic/react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionSetNav } from "./../../actions/index";
+import { logoutFromFirebaseAuth } from "../../api/firestoreFun";
 const SideMenu = () => {
   const dispatch = useDispatch(null);
   const Page = useSelector((state) => state.navReducer.page);
@@ -48,8 +49,13 @@ const SideMenu = () => {
           ) : (
             <></>
           )}
-          {/* TODO add logout function */}
-          <IonItem button>
+          <IonItem
+            button
+            onClick={() => {
+              logoutFromFirebaseAuth();
+              dispatch(actionSetNav("/", "Home"));
+            }}
+          >
             <IonLabel>Logout</IonLabel>
           </IonItem>
         </IonList>
