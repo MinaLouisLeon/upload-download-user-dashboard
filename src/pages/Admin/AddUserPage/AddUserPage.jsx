@@ -90,11 +90,15 @@ const AddUserPage = () => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        signInWithEmailAndPassword(auth, currentUserInfo.email, currentUserInfo.password)
+        signInWithEmailAndPassword(
+          auth,
+          currentUserInfo.email,
+          currentUserInfo.password
+        )
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log(user)
+            console.log(user);
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -130,6 +134,7 @@ const AddUserPage = () => {
           email: user.email,
           isAdmin: isAdmin,
           userName: userName,
+          isDeleted: false,
         };
         handleAddNewUser(user.uid, newUserData);
         console.log(user);
@@ -142,11 +147,11 @@ const AddUserPage = () => {
         console.log(errorMessage);
         // ..
       });
-      // reset inputs
-      setUserName("");
-      setEmail("");
-      setPassword("");
-      setIsAdmin(false);
+    // reset inputs
+    setUserName("");
+    setEmail("");
+    setPassword("");
+    setIsAdmin(false);
   };
   return (
     <IonPage>
@@ -158,10 +163,11 @@ const AddUserPage = () => {
           <>
             <HeaderComp />
             <div className="add-user-main-container">
-            <div className="add-user-inner-container br4 shadow-2 tc br4">
-              <form onSubmit={handleSubmit}>{contentData}</form>
+              <div className="add-user-inner-container br4 shadow-2 tc br4">
+                <form onSubmit={handleSubmit}>{contentData}</form>
+              </div>
             </div>
-          </div>.
+            .
           </>
         )}
       </IonContent>

@@ -1,8 +1,12 @@
 import { db, storage } from "./firebaseConfig";
 import { collection, doc, setDoc, getDoc, getDocs } from "firebase/firestore";
-import { ref, listAll, deleteObject ,getDownloadURL, getBlob } from "firebase/storage";
-import { getAuth, signOut } from "firebase/auth";
-
+import { ref, listAll, deleteObject, getDownloadURL } from "firebase/storage";
+import {
+  getAuth,
+  signOut,
+  signInWithEmailAndPassword,
+  deleteUser,
+} from "firebase/auth";
 
 export const getUSerInfoFromFirestore = async (uid) => {
   const docRef = doc(db, "users", uid);
@@ -66,37 +70,72 @@ export const deleteFileFromFirebaseStorage = async (fullPath) => {
 };
 
 export const downloadFileFromFirebaseStorage = async (fullPath) => {
-  const downloadRef = ref(storage,fullPath);
+  const downloadRef = ref(storage, fullPath);
   //get the download url
   getDownloadURL(downloadRef)
-  .then((url) => {
-    // const xhr = new XMLHttpRequest();
-    // xhr.responseType = 'blob';
-    // xhr.onload = (event) => {
-    //   const blob = xhr.response;
-    //   console.log(blob)
-    // };
-    // xhr.open('GET',url);
-    // xhr.send();
-    var element = document.createElement('a');
-    element.setAttribute('href',url);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-    console.log("download function no error")
-  }).catch((error) => {
-    console.log("error : " , error)
-  })
-  
-}
-
+    .then((url) => {
+      // const xhr = new XMLHttpRequest();
+      // xhr.responseType = 'blob';
+      // xhr.onload = (event) => {
+      //   const blob = xhr.response;
+      //   console.log(blob)
+      // };
+      // xhr.open('GET',url);
+      // xhr.send();
+      var element = document.createElement("a");
+      element.setAttribute("href", url);
+      element.style.display = "none";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+      console.log("download function no error");
+    })
+    .catch((error) => {
+      console.log("error : ", error);
+    });
+};
 
 export const logoutFromFirebaseAuth = async () => {
   const auth = getAuth();
-  signOut(auth).then(() => {
-    console.log("logout success")
-  }).catch((error) => {
-    console.log("error : ",error)
-  });
-} 
+  signOut(auth)
+    .then(() => {
+      console.log("logout success");
+    })
+    .catch((error) => {
+      console.log("error : ", error);
+    });
+};
+
+export const deleteUserFromFirebaseAuth = async (
+  deleteEmail,
+  deletePassword,
+  currentUserEmail,
+  currentUserPassword
+) => {
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {
+      signInWithEmailAndPassword(auth, deleteEmail, deletePassword)
+        .then((user) => {
+          deleteUser(user)
+            .then(() => {
+              console.log("user deleted");
+              signInWithEmailAndPassword(
+                auth,
+                currentUserEmail,
+                currentUserPassword
+              )
+                .then(() => {})
+                .catch((error) => console.log("error : ", error));
+            })
+            .catch((error) => {
+              console.log("error : ", error);
+              return false;
+            });
+        })
+        .catch((error) => console.log("error : ", error));
+    })
+    .catch((error) => {
+      console.log("error : ", error);
+    });
+};

@@ -32,6 +32,9 @@ const ClientListPage = () => {
   const dispatch = useDispatch(null);
   const listView = isMobile ? "" : "br4";
   const [actionSheetState,setActionSheetState] = useState({showActionSheet:false,fileFullPath:null})
+  const handleDownloadFile = (fileFullPath) => {
+    
+  }
   const pageContent = (
     <>
       <IonList className={listView}>
@@ -106,6 +109,7 @@ const ClientListPage = () => {
               text: "Download File",
               handler: () => {
                 // TODO add download function
+                handleDownloadFile(actionSheetState.fileFullPath);
                 downloadFileFromFirebaseStorage(actionSheetState.fileFullPath)
                 console.log("download");
               },

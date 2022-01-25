@@ -51,7 +51,7 @@ const LoginPage = () => {
         dispatch(actionSetNav("AdminUsersPage", "All Users"));
       } else {
         // TODO set title
-        dispatch(actionSetNav("ClientPage", "title"));
+        dispatch(actionSetNav("ClientListPage", "Files"));
       }
     }
     console.log(user);
