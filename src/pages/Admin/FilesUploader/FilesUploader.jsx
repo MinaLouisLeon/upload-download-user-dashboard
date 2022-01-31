@@ -8,7 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionSetUploadReducer } from "../../../actions";
 import { useState } from "react";
 import Mmodal from "../../../components/Mmodal/Mmodal";
-import { actionResetUploadDataReducer ,actionSetNav} from './../../../actions/index';
+import {
+  actionResetUploadDataReducer,
+  actionSetNav,
+} from "./../../../actions/index";
 import { logoutFromFirebaseAuth } from "../../../api/firestoreFun";
 import {
   IonButton,
@@ -25,7 +28,9 @@ const FilesUploader = () => {
   const uploadObjectReducer = useSelector(
     (state) => state.uploadDataReducer.objectData
   );
-  const selectedUserUid = useSelector(state => state.allUsersDataReducer.selectedUser.uid);
+  const selectedUserUid = useSelector(
+    (state) => state.allUsersDataReducer.selectedUser.uid
+  );
   const [showMmodal, setShowMmodal] = useState(false);
   let uploadObject = {};
   // handle close of upload modal and clean upload reducer & upload object
@@ -35,14 +40,14 @@ const FilesUploader = () => {
     dispatch(actionResetUploadDataReducer());
   };
   // upload files to firebase storage
-  const uploadFilesMonitorToFirebaseStorage  = (
+  const uploadFilesMonitorToFirebaseStorage = (
     filepath,
     filename,
     filetype,
     file,
     key
   ) => {
-    console.log("start uploading")
+    console.log("start uploading");
     const fileRef = ref(storage, filepath, filename);
     const uploadTask = uploadBytesResumable(fileRef, file, filetype);
     uploadTask.on(
@@ -50,7 +55,7 @@ const FilesUploader = () => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Progress : ",progress)
+        console.log("Progress : ", progress);
         uploadObject = {
           ...uploadObject,
           [key]: {
@@ -71,7 +76,7 @@ const FilesUploader = () => {
   //call the download function and set path on firebase
   const handleStartUploading = () => {
     Object.keys(uploadObject).map((key) => {
-      console.log("start upload function of ",uploadObject[key].file.name);
+      console.log("start upload function of ", uploadObject[key].file.name);
       uploadFilesMonitorToFirebaseStorage(
         selectedUserUid + "/" + uploadObject[key].file.name,
         uploadObject[key].file.name,
@@ -82,8 +87,8 @@ const FilesUploader = () => {
     });
   };
   // construct the object for nulti download files
-  const handleConstructUploading = async(acceptedFiles) => {
-    console.log("start constraction")
+  const handleConstructUploading = async (acceptedFiles) => {
+    console.log("start constraction");
     acceptedFiles.map((file) => {
       let filename = file.name;
       uploadObject = {
@@ -95,7 +100,7 @@ const FilesUploader = () => {
       };
     });
     await dispatch(actionSetUploadReducer(uploadObject));
-    console.log("dispatch done")
+    console.log("dispatch done");
     handleStartUploading();
   };
   // dropzone styling
@@ -184,7 +189,13 @@ const FilesUploader = () => {
         <IonHeader>
           <IonToolbar mode="ios">
             <IonButtons>
-              <IonButton color="primary" slot="start" onClick={() => dispatch(actionSetNav("ManageFiles","Manage Files"))}>
+              <IonButton
+                color="primary"
+                slot="start"
+                onClick={() =>
+                  dispatch(actionSetNav("ManageFiles", "Manage Files"))
+                }
+              >
                 Back
               </IonButton>
               <IonTitle>{PageTitle}</IonTitle>
@@ -227,20 +238,32 @@ const FilesUploader = () => {
                 <div className="header-logo-container">
                   <img
                     alt="site logo"
-                    src="/logo.png"
+                    src="/demo/webApps/admin-users-file-hosting-app/logo.png"
                     style={{ width: "157px", height: "100px" }}
                     className="ma2"
                   />
                 </div>
                 <div className="header-nav-container">
                   <IonButtons>
-                    <IonButton fill="solid" color="primary" shape="round" onClick={() => dispatch(actionSetNav("ManageFiles","Manage Files"))}>
+                    <IonButton
+                      fill="solid"
+                      color="primary"
+                      shape="round"
+                      onClick={() =>
+                        dispatch(actionSetNav("ManageFiles", "Manage Files"))
+                      }
+                    >
                       Back
                     </IonButton>
-                    <IonButton fill="solid" color="danger" shape="round" onClick={() => {
-                 logoutFromFirebaseAuth();
-                 dispatch(actionSetNav("/","Home"));
-              }}>
+                    <IonButton
+                      fill="solid"
+                      color="danger"
+                      shape="round"
+                      onClick={() => {
+                        logoutFromFirebaseAuth();
+                        dispatch(actionSetNav("/", "Home"));
+                      }}
+                    >
                       Logout
                     </IonButton>
                   </IonButtons>

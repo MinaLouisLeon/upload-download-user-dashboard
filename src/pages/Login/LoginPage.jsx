@@ -92,9 +92,15 @@ const LoginPage = () => {
         {isMobile ? (
           <></>
         ) : (
-          <div style={{ display: "flex" , "flexDirection" : "row" , "justifyContent" : "center"}}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
             <img
-              src="/logo.png"
+              src="/demo/webApps/admin-users-file-hosting-app/logo.png"
               alt="site logo"
               style={{ width: "157px", height: "100px" }}
               className="ma2"

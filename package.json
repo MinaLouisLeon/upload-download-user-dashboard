@@ -2,6 +2,7 @@
   "name": "upload-download-user-dashboard",
   "version": "0.0.1",
   "private": true,
+  "homepage": "http://minalouisleon.xyz/demo/webApps/admin-users-file-hosting-app/",
   "dependencies": {
     "@capacitor/app": "1.0.7",
     "@capacitor/core": "3.3.4",

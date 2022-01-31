@@ -76,7 +76,7 @@ const AdminUsersPage = () => {
         )}
 
         {/* TODO add handler for actionsheet buttons */}
-        {/* <IonActionSheet
+        <IonActionSheet
           mode="ios"
           isOpen={actionSheetState.showActionSheet}
           onDidDismiss={() =>
@@ -90,19 +90,19 @@ const AdminUsersPage = () => {
                 dispatch(actionSetNav("ManageFiles","Manage Files"));
               },
             },
-            {
-              text: "Delete",
-              role: "destructive",
-              handler: () => {
-                console.log("delete");setMmodalState({showMmodal:true,uid:actionSheetState.key});
-              },
-            },
+            // {
+            //   text: "Delete",
+            //   role: "destructive",
+            //   handler: () => {
+            //     console.log("delete");setMmodalState({showMmodal:true,uid:actionSheetState.key});
+            //   },
+            // },
             {
               text: "Cancel",
               role: "cancel",
             },
           ]}
-        ></IonActionSheet> */}
+        ></IonActionSheet>
         {/* <Mmodal
           show={MmodalState.showMmodal}
           handleClose={() => setMmodalState({showMmodal : false,uid:null})}

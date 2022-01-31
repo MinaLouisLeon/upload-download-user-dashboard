@@ -33,7 +33,7 @@ const HeaderComp = ({ children }) => {
               <div className="header-logo-container">
                 <img
                   alt="site logo"
-                  src="/logo.png"
+                  src="/demo/webApps/admin-users-file-hosting-app/logo.png"
                   style={{ width: "157px", height: "100px" }}
                   className="ma2"
                 />
